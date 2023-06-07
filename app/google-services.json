@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "36732072444",
+    "project_id": "aplikasipemesananyank",
+    "storage_bucket": "aplikasipemesananyank.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36732072444:android:9dba466b11c6c856ea4279",
+        "android_client_info": {
+          "package_name": "com.example.YANK_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "36732072444-01l302gpto2gn4evnt81gevb0lfdg8gc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeaUB6q8wWdgaPI4NBlyGCrb3pGNMOlXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "36732072444-01l302gpto2gn4evnt81gevb0lfdg8gc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

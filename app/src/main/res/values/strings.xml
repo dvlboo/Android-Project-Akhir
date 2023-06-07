@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Reg, Log, For, OTP</string>
+
+    <string name="TitleStartLogin">Welcome to</string>
+    <string name="TitleStartLogin2">Yank Grill &amp; Bar</string>
+    <string name="TitleStartLogin3">All You Can Eat Resto</string>
+    <string name="LoginHome">Eating experience like in korea and the taste is so special</string>\
+
+    <string name="TitleStartSignUp">SIGN IN</string>
+
+    <string name="TitleStartForget">FORGET PASSWORD</string>
+
+</resources>

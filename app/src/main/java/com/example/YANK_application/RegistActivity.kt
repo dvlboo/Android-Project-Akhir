@@ -53,25 +53,20 @@ class RegistActivity : AppCompatActivity() {
         binding.BCreate.setOnClickListener {
 //            val password1 = binding.ETPassword.text.toString()
 //            val password2 = binding.ETPassword2.text.toString()
-            val otp = binding.ETOtp.text.toString()
 //            val name = binding.ETName.text.toString()
 //            val username = binding.ETUsername.text.toString()
 //            val email = binding.ETEmail.text.toString()
 
-
-            if (otp != "123456"){
-                    showToast("OTP Salah")
-            } else {
-                val username = binding.ETUsername.text.toString().trim()
                 val email = binding.ETEmail.text.toString().trim()
                 val password = binding.ETPassword.text.toString().trim()
                 val name = binding.ETName.text.toString().trim()
-                registerAuth(email, password, name, username)
+                val phone = binding.ETNoTelp.text.toString().trim()
+                registerAuth(email, password, name, phone)
 
 
 //                intent = Intent(this, LoginActivity::class.java)
 //                startActivity(intent)
-            }
+
 
         }
 
@@ -85,6 +80,16 @@ class RegistActivity : AppCompatActivity() {
             showNameExistAlert(it)
         }
 
+        // phone validasi
+        val phoneStream = RxTextView.textChanges(binding.ETNoTelp)
+            .skipInitialValue()
+            .map { phone ->
+                phone.isEmpty()
+            }
+        phoneStream.subscribe {
+            showPhoneExistAlert(it)
+        }
+
         // email validasi
         val emailStream = RxTextView.textChanges(binding.ETEmail)
             .skipInitialValue()
@@ -94,16 +99,6 @@ class RegistActivity : AppCompatActivity() {
             }
         emailStream.subscribe {
             showEmailValidAlert(it)
-        }
-
-        // Username validation
-        val usernameStream = RxTextView.textChanges(binding.ETUsername)
-            .skipInitialValue()
-            .map { username ->
-                username.length < 5
-            }
-        usernameStream.subscribe {
-            showTextMinimalAlert(it,"Username")
         }
 
         // Password validation
@@ -133,26 +128,16 @@ class RegistActivity : AppCompatActivity() {
             showPasswordConfirmAlert(it)
         }
 
-        // otp validasi
-        val otpStream = RxTextView.textChanges(binding.ETOtp)
-            .skipInitialValue()
-            .map { otp ->
-                otp.isEmpty()
-            }
-        otpStream.subscribe {
-            showOtpAlert(it)
-        }
 
         // button enable true or false
         val invalidFieldStream = io.reactivex.Observable.combineLatest(
             nameStream,
+            phoneStream,
             emailStream,
-            usernameStream,
             passwordStream,
             password2Stream,
-            otpStream
-        ) { nameInvalid: Boolean, emailInvalid: Boolean, usernameInvalid: Boolean, passwordInvalid: Boolean, password2Invalid: Boolean, otpInvalid: Boolean ->
-            !nameInvalid && !emailInvalid && !usernameInvalid && !passwordInvalid && !password2Invalid && !otpInvalid
+        ) { nameInvalid: Boolean, phoneInvalid: Boolean, emailInvalid: Boolean, passwordInvalid: Boolean, password2Invalid: Boolean ->
+            !nameInvalid && !phoneInvalid && !emailInvalid && !passwordInvalid && !password2Invalid
         }
         invalidFieldStream.subscribe { isValid ->
             if (isValid){
@@ -165,30 +150,63 @@ class RegistActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerAuth(email: String, password: String, name: String, username: String) {
+    private fun registerAuth(email: String, password: String, name: String, phone: String) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this){
-                if(it.isSuccessful){
-                    showToast("Berhasil Membuat Akun")
-                    userID = auth.currentUser!!.uid
-                    val documentReference: DocumentReference = fstore.collection("users").document(userID)
-                    val user: MutableMap<String, Any> = HashMap()
-                    user["FName"] = name
-                    user["UName"] = username
-                    documentReference.set(user)
-                        .addOnSuccessListener {
-                            Log.d(TAG, "onSuccess: profil pengguna berhasil dibuat untuk $userID")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.d(TAG, "onFailure: ${e.toString()}")
-                        }
+            .addOnCompleteListener(this){task->
+                if(task.isSuccessful){
 
-                    intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
+                    auth.currentUser?.sendEmailVerification()
+                        ?.addOnSuccessListener {
+                            showToast("Periksa Email anda dan Verifikasi Akun anda!")
+
+                            // menyimpan data ke firestore {
+                            userID = auth.currentUser!!.uid
+                            val documentReference: DocumentReference = fstore.collection("users").document(userID)
+                            val user: MutableMap<String, Any> = HashMap()
+                            user["FName"] = name
+                            user["Phone"] = phone
+                            user["Waktu"] = "0"
+                            user["Histori"] = ""
+                            documentReference.set(user)
+                            intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+//                                .addOnSuccessListener {
+//                                    Log.d(TAG, "onSuccess: profil pengguna berhasil dibuat untuk $userID")
+//                                }
+//                                .addOnFailureListener { e ->
+//                                    Log.d(TAG, "onFailure: ${e.toString()}")
+//                                }
+
+                        }
+                        ?.addOnFailureListener{
+                            showToast(it.toString())
+                        }
                 } else {
-                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
-//                    showToast(it.exception?.message)
+                    showToast(task.exception?.message.toString())
                 }
+//                if(it.isSuccessful){
+//                    showToast("Berhasil Membuat Akun")
+//                    // menyimpan data ke firestore {
+//                    userID = auth.currentUser!!.uid
+//                    val documentReference: DocumentReference = fstore.collection("users").document(userID)
+//                    val user: MutableMap<String, Any> = HashMap()
+//                    user["FName"] = name
+//                    user["UName"] = username
+//                    user["Email"] = email
+//                    documentReference.set(user)
+//                        .addOnSuccessListener {
+//                            Log.d(TAG, "onSuccess: profil pengguna berhasil dibuat untuk $userID")
+//                        }
+//                        .addOnFailureListener { e ->
+//                            Log.d(TAG, "onFailure: ${e.toString()}")
+//                        }
+//                    // } ////////
+//                    intent = Intent(this, LoginActivity::class.java)
+//                    startActivity(intent)
+//                } else {
+//                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
+////                    showToast(it.exception?.message)
+//                }
             }
     }
 
@@ -228,10 +246,12 @@ class RegistActivity : AppCompatActivity() {
         binding.ETName.error = if (isNotValid)"Nama tidak boleh kosong!" else null
     }
 
+    private fun showPhoneExistAlert(isNotValid: Boolean){
+        binding.ETNoTelp.error = if (isNotValid)"No Telp tidak boleh kosong!" else null
+    }
+
     private fun showTextMinimalAlert(isNotValid: Boolean, text: String){
-        if (text == "Username")
-            binding.ETUsername.error = if (isNotValid)"$text harus lebih dari 5 huruf!" else null
-        else if (text == "Password")
+        if (text == "Password")
             binding.ETPassword.error = if (isNotValid)"$text harus lebih dari 8 huruf!" else null
     }
 
@@ -241,9 +261,5 @@ class RegistActivity : AppCompatActivity() {
 
     private fun showPasswordConfirmAlert(isNotValid: Boolean){
         binding.ETPassword2.error = if (isNotValid)"Password tidak sama!" else null
-    }
-
-    private fun showOtpAlert(isNotValid: Boolean){
-        binding.ETOtp.error = if (isNotValid)"OTP wajib di isi!" else null
     }
 }

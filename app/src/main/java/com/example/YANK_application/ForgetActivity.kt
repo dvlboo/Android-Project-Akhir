@@ -1,6 +1,7 @@
 package com.example.YANK_application
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,15 +9,20 @@ import android.text.InputType
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.YANK_application.databinding.ActivityForgetBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
 
 @SuppressLint("CheckResult")
 class ForgetActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityForgetBinding
     var isTextViewVisible = true
+
+    private lateinit var auth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,121 +33,49 @@ class ForgetActivity : AppCompatActivity() {
         val flags = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.decorView.systemUiVisibility = flags
 
-
-        binding.IVHideSee.setOnClickListener(
-            object : View.OnClickListener {
-                override fun onClick(v: View) {
-                    hidesee()
-                }
-            })
-
-        binding.IVHideSee2.setOnClickListener(
-            object : View.OnClickListener {
-                override fun onClick(v: View) {
-                    hidesee()
-                }
-            })
+        //Auth
+        auth = FirebaseAuth.getInstance()
 
         // email validasi
         val emailStream = RxTextView.textChanges(binding.ETEmail)
             .skipInitialValue()
             .map { email ->
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                //email.isEmpty()
+//                email.isEmpty()
             }
         emailStream.subscribe {
             showEmailValidAlert(it)
         }
 
-        // Password validation
-        val passwordStream = RxTextView.textChanges(binding.ETPassword)
-            .skipInitialValue()
-            .map { password ->
-                password.length < 8
-            }
-        passwordStream.subscribe {
-            showTextMinimalAlert(it,"Password")
-        }
+        binding.BChange.setOnClickListener{
+            val email = binding.ETEmail.text.toString().trim()
 
-        // Confirm Password validation
-        val password2Stream = io.reactivex.Observable.merge(
-//        val password2Stream = Observable.merge(
-            RxTextView.textChanges(binding.ETPassword)
-                .skipInitialValue()
-                .map { password ->
-                    password.toString() != binding.ETPassword2.text.toString()
-                },
-            RxTextView.textChanges(binding.ETPassword2)
-                .skipInitialValue()
-                .map { confirmpassword ->
-                    confirmpassword.toString() != binding.ETPassword.text.toString()
-                })
-        password2Stream.subscribe {
-            showPasswordConfirmAlert(it)
-        }
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(this) { reset ->
+                    if(reset.isSuccessful){
+                        Intent(this, LoginActivity::class.java).also {
+                            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(it)
+                            showToast("Periksa Email Anda untuk mengatur ulang kata sandi!")
+                        }
+                    }else{
+                        showToast(reset.exception?.message.toString())
+                    }
+                }
 
-        // otp validasi
-        val otpStream = RxTextView.textChanges(binding.ETOtp)
-            .skipInitialValue()
-            .map { otp ->
-                otp.isEmpty()
-            }
-        otpStream.subscribe {
-            showOtpAlert(it)
         }
-
-        // button enable true or false
-        val invalidFieldStream = io.reactivex.Observable.combineLatest(
-            emailStream,
-            passwordStream,
-            password2Stream,
-            otpStream
-        ) { emailInvalid: Boolean, passwordInvalid: Boolean, password2Invalid: Boolean, otpInvalid: Boolean ->
-            !emailInvalid && !passwordInvalid && !password2Invalid && !otpInvalid
-        }
-        invalidFieldStream.subscribe { isValid ->
-            if (isValid){
-                binding.BChange.isEnabled = true
-                binding.BChange.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
-            } else {
-                binding.BChange.isEnabled = false
-                binding.BChange.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
-            }
-        }
-
 
     }
 
     private fun showEmailValidAlert(isNotValid: Boolean){
-        binding.ETEmail.error = if (isNotValid)"Email tidak valid!" else null
-    }
-
-    private fun showOtpAlert(isNotValid: Boolean){
-        binding.ETOtp.error = if (isNotValid)"OTP wajib di isi!" else null
-    }
-
-    private fun showTextMinimalAlert(isNotValid: Boolean, text: String){
-        if (text == "Password"){
-            binding.ETPassword.error = if (isNotValid)"$text harus lebih dari 8 huruf!" else null
-        }
-    }
-    private fun showPasswordConfirmAlert(isNotValid: Boolean){
-        binding.ETPassword2.error = if (isNotValid)"Password tidak sama!" else null
-    }
-
-    private fun hidesee() {
-        if (isTextViewVisible) {
-            binding.ETPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
-            binding.ETPassword2.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
-            binding.IVHideSee.setImageResource(R.drawable.eye)
-            binding.IVHideSee2.setImageResource(R.drawable.eye)
-            isTextViewVisible = false
-        } else {
-            binding.ETPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.ETPassword2.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.IVHideSee.setImageResource(R.drawable.hide)
-            binding.IVHideSee2.setImageResource(R.drawable.hide)
-            isTextViewVisible = true
+        if(isNotValid){
+            binding.ETEmail.error = "Email tidak valid!"
+            binding.BChange.isEnabled = false
+            binding.BChange.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
+        }else{
+            binding.ETEmail.error = null
+            binding.BChange.isEnabled = true
+            binding.BChange.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
         }
     }
 
@@ -154,6 +88,10 @@ class ForgetActivity : AppCompatActivity() {
     // menyembunyikan status bar
     private fun hideStatusBar() {
         window.insetsController?.hide(WindowInsets.Type.statusBars())
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 

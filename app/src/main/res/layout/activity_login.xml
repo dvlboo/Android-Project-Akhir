@@ -78,14 +78,14 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/inter_regular"
             android:paddingHorizontal="25dp"
-            android:text="Username"
+            android:text="Email"
             android:textColor="@color/black"
             android:textSize="24dp"
             android:textStyle="bold|italic" />
 
 
         <EditText
-            android:id="@+id/ETUsername"
+            android:id="@+id/ETEmail"
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="150px"
             android:layout_height="40dp"

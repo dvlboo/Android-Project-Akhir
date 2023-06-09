@@ -70,8 +70,8 @@ class LoginActivity : AppCompatActivity() {
             })
 
         binding.BLogin.setOnClickListener{
-            val username = binding.ETUsername.text.toString()
-            val password = binding.ETPassword.text.toString()
+            val email = binding.ETEmail.text.toString().trim()
+            val password = binding.ETPassword.text.toString().trim()
 
 //            // Menyimpan informasi login ke SharedPreferences
 //            val editor = login!!.edit()
@@ -79,17 +79,13 @@ class LoginActivity : AppCompatActivity() {
 //            editor.putString("password", password)
 //            editor.apply()
 
-            val username1 = binding.ETUsername.text.toString().trim()
-//            val email1 = binding.ETEmail.text.toString().trim()
-            val password1 = binding.ETPassword.text.toString().trim()
-//            registerAuth(email1, password1)
-            loginUser(username1, password1)
+            loginUser(email, password)
 
 
         }
 
         // Username validation
-        val usernameStream = RxTextView.textChanges(binding.ETUsername)
+        val usernameStream = RxTextView.textChanges(binding.ETEmail)
             .skipInitialValue()
             .map { username ->
                 username.isEmpty()
@@ -128,25 +124,31 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun loginUser(username1: String, password1: String) {
-        auth.signInWithEmailAndPassword(username1, password1)
-            .addOnCompleteListener(this){login ->
-                if (login.isSuccessful){
-                    // Lanjutkan ke halaman berikutnya
-                    Intent(this, HomeActivity::class.java).also{
-                        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(it)
-                        showToast("Login Berhasil")
+    private fun loginUser(email1: String, password1: String) {
+        auth.signInWithEmailAndPassword(email1, password1)
+            .addOnCompleteListener(this){task ->
+                if (task.isSuccessful){
+                    val verification = auth.currentUser?.isEmailVerified
+                    if (verification == true){
+                        val user = auth.currentUser
+                        // Lanjutkan ke halaman berikutnya
+                        Intent(this, HomeActivity::class.java).also{
+                            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(it)
+                            showToast("Login Berhasil")
+                        }
+                    }else {
+                        showToast("Mohon Verifikasi email anda! Cek di email")
                     }
                 } else {
-                    Toast.makeText(this, login.exception?.message, Toast.LENGTH_SHORT).show()
+                    showToast(task.exception?.message.toString())
                 }
             }
     }
 
     private fun showTextMinimalAlert(isNotValid: Boolean, text: String){
-        if (text == "Username")
-            binding.ETUsername.error = if (isNotValid)"$text Tidak Boleh Kosong!" else null
+        if (text == "Email")
+            binding.ETEmail.error = if (isNotValid)"$text Tidak Boleh Kosong!" else null
         else if (text == "Password")
             binding.ETPassword.error = if (isNotValid)"$text Tidak Boleh Kosong!" else null
     }
@@ -201,12 +203,12 @@ class LoginActivity : AppCompatActivity() {
     // ketika user sudah login bakal balik lagi ke home
     override fun onStart() {
         super.onStart()
-//        if(auth.currentUser != null){
-//            Intent(this, HomeActivity::class.java).also{
-//                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//                startActivity(it)
-//            }
-//        }
+        if(auth.currentUser != null){
+            Intent(this, HomeActivity::class.java).also{
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(it)
+            }
+        }
     }
 
 //    private fun dataakunbaru() {

@@ -1,11 +1,13 @@
 package com.example.YANK_application
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
@@ -13,6 +15,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.YANK_application.databinding.ActivityRegistBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jakewharton.rxbinding2.widget.RxTextView
 
 
@@ -23,6 +27,9 @@ class RegistActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistBinding
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var fstore: FirebaseFirestore
+
+    lateinit var userID: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +39,7 @@ class RegistActivity : AppCompatActivity() {
 
         //Auth
         auth = FirebaseAuth.getInstance()
+        fstore = FirebaseFirestore.getInstance()
 
 
         window.statusBarColor = Color.TRANSPARENT
@@ -57,7 +65,9 @@ class RegistActivity : AppCompatActivity() {
                 val username = binding.ETUsername.text.toString().trim()
                 val email = binding.ETEmail.text.toString().trim()
                 val password = binding.ETPassword.text.toString().trim()
-                registerAuth(email, password)
+                val name = binding.ETName.text.toString().trim()
+                registerAuth(email, password, name, username)
+
 
 //                intent = Intent(this, LoginActivity::class.java)
 //                startActivity(intent)
@@ -155,11 +165,24 @@ class RegistActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerAuth(email: String, password: String) {
+    private fun registerAuth(email: String, password: String, name: String, username: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
                     showToast("Berhasil Membuat Akun")
+                    userID = auth.currentUser!!.uid
+                    val documentReference: DocumentReference = fstore.collection("users").document(userID)
+                    val user: MutableMap<String, Any> = HashMap()
+                    user["FName"] = name
+                    user["UName"] = username
+                    documentReference.set(user)
+                        .addOnSuccessListener {
+                            Log.d(TAG, "onSuccess: profil pengguna berhasil dibuat untuk $userID")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.d(TAG, "onFailure: ${e.toString()}")
+                        }
+
                     intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -167,7 +190,6 @@ class RegistActivity : AppCompatActivity() {
 //                    showToast(it.exception?.message)
                 }
             }
-
     }
 
     private fun showToast(message: String) {

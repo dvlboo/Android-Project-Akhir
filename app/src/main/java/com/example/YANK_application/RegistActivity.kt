@@ -168,6 +168,7 @@ class RegistActivity : AppCompatActivity() {
                             user["Waktu"] = "0"
                             user["Histori"] = ""
                             user["Banned"] = 0
+                            user["Meja"] = ""
                             documentReference.set(user)
                             intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)

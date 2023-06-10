@@ -48,6 +48,60 @@ class TableActivity : AppCompatActivity() {
             updateDataMeja("A5")
         }
 
+
+
+
+
+//                for (i in 0 until 6) {
+//                    val meja = "A$i"
+//                    if (meja == "Di pesan") {
+//                        binding.button.isEnabled = false
+//                        binding.button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
+//                        binding.button.setTextColor(ContextCompat.getColor(this, R.color.white))
+//                    } else{
+//                        binding.button.isEnabled = true
+//                        binding.button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
+//                        binding.button.setTextColor(ContextCompat.getColor(this, R.color.black))
+//                    }
+//                }
+
+    }
+
+    fun updateDataMeja(meja: String) {
+        val documentReference: DocumentReference = store.collection("meja").document("reservasimeja")
+        documentReference.addSnapshotListener(this, EventListener<DocumentSnapshot> { documentSnapshot, e ->
+            if (e != null) {
+                Log.d(ContentValues.TAG, "Error: $e")
+                return@EventListener
+            }
+        val newData = HashMap<String, Any>()
+            val cek = documentSnapshot?.getString(meja)
+
+            if (cek == "Kosong"){
+                newData[meja] = "Di pesan"
+
+                val documentReference: DocumentReference = store.collection("meja").document("reservasimeja")
+                documentReference.set(newData, SetOptions.merge())
+                    .addOnSuccessListener {
+                        showToast("Berhasil Mengakses Meja")
+                        val intent = Intent(this, CountDownTableActivity::class.java)
+                        intent.putExtra("Meja", meja)
+                        startActivity(intent)
+
+                    }
+                    .addOnFailureListener { e ->
+                        showToast("Gagal Memesan Meja: ${e.message}")
+                    }
+            }
+        })
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onStart() {
+        super.onStart()
         val buttonList = listOf(
             binding.button, binding.button2, binding.button3, binding.button4, binding.button5
         )
@@ -75,56 +129,8 @@ class TableActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-
-//                for (i in 0 until 6) {
-//                    val meja = "A$i"
-//                    if (meja == "Di pesan") {
-//                        binding.button.isEnabled = false
-//                        binding.button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
-//                        binding.button.setTextColor(ContextCompat.getColor(this, R.color.white))
-//                    } else{
-//                        binding.button.isEnabled = true
-//                        binding.button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
-//                        binding.button.setTextColor(ContextCompat.getColor(this, R.color.black))
-//                    }
-//                }
-
             }
         })
 
-    }
-
-    fun updateDataMeja(meja: String) {
-        val documentReference: DocumentReference = store.collection("meja").document("reservasimeja")
-        documentReference.addSnapshotListener(this, EventListener<DocumentSnapshot> { documentSnapshot, e ->
-            if (e != null) {
-                Log.d(ContentValues.TAG, "Error: $e")
-                return@EventListener
-            }
-        val newData = HashMap<String, Any>()
-            val cek = documentSnapshot?.getString(meja)
-
-            if (cek == "Kosong"){
-                newData[meja] = "Di pesan"
-
-                val documentReference: DocumentReference = store.collection("meja").document("reservasimeja")
-                documentReference.set(newData, SetOptions.merge())
-                    .addOnSuccessListener {
-                        showToast("Berhasil Memesan Meja")
-                        val intent = Intent(this, CountDownTableActivity::class.java)
-                        intent.putExtra("Meja", meja)
-                        startActivity(intent)
-
-                    }
-                    .addOnFailureListener { e ->
-                        showToast("Gagal Memesan Meja: ${e.message}")
-                    }
-            }
-        })
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 }

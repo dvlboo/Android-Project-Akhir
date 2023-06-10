@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -26,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
 
     var isTextViewVisible = true
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var imageView: ImageView
     private var backPressed: Long = 0
 
     private lateinit var auth: FirebaseAuth
@@ -51,23 +51,20 @@ class LoginActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = flags
 
 
-        imageView = binding.IVHideSee
-
-
-        imageView.setOnClickListener(
-            object : View.OnClickListener {
-                override fun onClick(v: View) {
-                    if (isTextViewVisible) {
-                        binding.ETPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
-                        imageView.setImageResource(R.drawable.eye)
-                        isTextViewVisible = false
-                    } else {
-                        binding.ETPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                        imageView.setImageResource(R.drawable.hide)
-                        isTextViewVisible = true
-                    }
-                }
-            })
+//        imageView.setOnClickListener(
+//            object : View.OnClickListener {
+//                override fun onClick(v: View) {
+//                    if (isTextViewVisible) {
+//                        binding.ETPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
+//                        imageView.setImageResource(R.drawable.eye)
+//                        isTextViewVisible = false
+//                    } else {
+//                        binding.ETPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+//                        imageView.setImageResource(R.drawable.hide)
+//                        isTextViewVisible = true
+//                    }
+//                }
+//            })
 
         binding.BLogin.setOnClickListener{
             val email = binding.ETEmail.text.toString().trim()
@@ -100,9 +97,9 @@ class LoginActivity : AppCompatActivity() {
             .map { password ->
                 password.isEmpty()
             }
-        passwordStream.subscribe {
-            showTextMinimalAlert(it,"Password")
-        }
+//        passwordStream.subscribe {
+//            showTextMinimalAlert(it,"Password")
+//        }
 
         // button enable true or false
         val invalidFieldStream = io.reactivex.Observable.combineLatest(
@@ -114,10 +111,10 @@ class LoginActivity : AppCompatActivity() {
         invalidFieldStream.subscribe { isValid ->
             if (isValid){
                 binding.BLogin.isEnabled = true
-                binding.BLogin.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
+                binding.BLogin.backgroundTintList = ContextCompat.getColorStateList(this, R.color.grey)
             } else {
                 binding.BLogin.isEnabled = false
-                binding.BLogin.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
+                binding.BLogin.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.holo_red_light)
             }
         }
 
@@ -166,7 +163,9 @@ class LoginActivity : AppCompatActivity() {
     }
     // menyembunyikan status bar
     private fun hideStatusBar() {
-        window.insetsController?.hide(WindowInsets.Type.statusBars())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        }
     }
 
     fun ClickMoveRegist(view: View) {

@@ -14,8 +14,11 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.ktx.Firebase
+import java.util.*
 import javax.annotation.Nullable
+import kotlin.collections.HashMap
 
 @Suppress("DEPRECATION")
 class HomeActivity : AppCompatActivity() {
@@ -26,6 +29,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var store: FirebaseFirestore
     lateinit var userId: String
+    var sampai: Int? = null
+    var sekarang: Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +48,21 @@ class HomeActivity : AppCompatActivity() {
         val histori = binding.TVNoTelp
 
         // get data firestore sesuai id
+//        val documentReference: DocumentReference = store.collection("users").document(userId)
+//        documentReference.addSnapshotListener(this, EventListener<DocumentSnapshot> { documentSnapshot, e ->
+//            if (e != null) {
+//                Log.d(TAG, "Error: $e")
+//                return@EventListener
+//            }
+//
+//            if (documentSnapshot != null && documentSnapshot.exists()) {
+//                fullname.text = documentSnapshot.getString("FName")
+//                phone.text = documentSnapshot.getString("Phone")
+//                histori.text = documentSnapshot.getString("Histori")
+//            }
+//        })
+
+        // get data firestore sesuai id
         val documentReference: DocumentReference = store.collection("users").document(userId)
         documentReference.addSnapshotListener(this, EventListener<DocumentSnapshot> { documentSnapshot, e ->
             if (e != null) {
@@ -56,6 +76,7 @@ class HomeActivity : AppCompatActivity() {
                 histori.text = documentSnapshot.getString("Histori")
             }
         })
+
 
 
         window.statusBarColor = Color.TRANSPARENT
@@ -105,6 +126,7 @@ class HomeActivity : AppCompatActivity() {
         newData["FName"] = "Nama Baru"
         newData["UName"] = "Username Baru"
         newData["Email"] = "Email Baru"
+        newData["Banned"] = 0
 
         val documentReference: DocumentReference = store.collection("users").document(userId)
         documentReference.set(newData, SetOptions.merge())
@@ -138,8 +160,48 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun pesan_meja(view: View) {
-        intent = Intent(this, TableActivity::class.java)
-        startActivity(intent)
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val documentReference: DocumentReference = store.collection("users").document(userId)
+        documentReference.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                sampai = documentSnapshot.getLong("Banned")?.toInt()
+            }
+                sekarang = (hour * 60) + minute
+
+//                var xnow = this.sampai!! - sekarang!!
+
+                if (sampai!! <= sekarang!! || sampai == 0) {
+                    val newData = HashMap<String, Any>()
+                    newData["Banned"] = 0
+
+                    documentReference.set(newData, SetOptions.merge())
+
+                    val intent = Intent(this, TableActivity::class.java)
+                    startActivity(intent)
+
+                } else {
+
+                    fun formatAngka(angka: Int): String {
+                        return String.format("%02d", angka)
+                    }
+
+
+
+                    val xsekarang = sampai!! - sekarang!!
+                    val xmenit = sampai!! % 60
+                    val xjam = sampai!! / 60
+
+                    val xxmenit = formatAngka(xmenit)
+
+                    showToast("Anda Telah diBanned selama $xsekarang menit. Tunggu Sampai $xjam:$xxmenit !!")
+                }
+        }.addOnFailureListener { e ->
+            Log.d(TAG, "Error: $e")
+        }
     }
+
 
 }

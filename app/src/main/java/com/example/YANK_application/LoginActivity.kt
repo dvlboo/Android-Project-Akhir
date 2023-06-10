@@ -200,16 +200,7 @@ class LoginActivity : AppCompatActivity() {
 //        return
 //    }
 
-    // ketika user sudah login bakal balik lagi ke home
-    override fun onStart() {
-        super.onStart()
-        if(auth.currentUser != null){
-            Intent(this, HomeActivity::class.java).also{
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(it)
-            }
-        }
-    }
+
 
 //    private fun dataakunbaru() {
 //        akun = getSharedPreferences("akun", MODE_PRIVATE)

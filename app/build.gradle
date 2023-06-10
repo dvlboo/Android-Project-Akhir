@@ -10,10 +10,14 @@ android {
 
     defaultConfig {
         applicationId "com.example.YANK_application"
+<<<<<<< HEAD
         minSdk 26
+=======
+        minSdk 29
+>>>>>>> 9a2187ea6a594a5713a40b209bbd63f63d0d5822
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

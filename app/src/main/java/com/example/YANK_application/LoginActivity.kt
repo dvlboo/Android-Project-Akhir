@@ -163,15 +163,11 @@ class LoginActivity : AppCompatActivity() {
     }
     // menyembunyikan status bar
     private fun hideStatusBar() {
-<<<<<<< HEAD
 //        window.insetsController?.hide(WindowInsets.Type.statusBars())
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-
-=======
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         }
->>>>>>> ae608008d33dc70aaf5c6f84be4b5822d284e10d
     }
 
     fun ClickMoveRegist(view: View) {

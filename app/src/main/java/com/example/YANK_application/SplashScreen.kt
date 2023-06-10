@@ -18,19 +18,20 @@ class SplashScreen : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         Handler().postDelayed({
-            startActivity(Intent(this,LoginActivity::class.java))
+            cekLogin()
             finish()
         }, SPLASH_TIME_OUT)
     }
 
     // ketika user sudah login bakal balik lagi ke home
-    override fun onStart() {
-        super.onStart()
+     fun cekLogin() {
         if(auth.currentUser != null){
             Intent(this, HomeActivity::class.java).also{
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(it)
             }
+        } else {
+            startActivity(Intent(this,LoginActivity::class.java))
         }
     }
 }

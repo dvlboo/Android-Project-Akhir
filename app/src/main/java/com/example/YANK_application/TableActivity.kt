@@ -4,10 +4,12 @@ import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.YANK_application.databinding.ActivityTableBinding
+import com.example.YANK_application.uitel.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -68,32 +70,43 @@ class TableActivity : AppCompatActivity() {
     }
 
     fun updateDataMeja(meja: String) {
-        val documentReference: DocumentReference = store.collection("meja").document("reservasimeja")
-        documentReference.addSnapshotListener(this, EventListener<DocumentSnapshot> { documentSnapshot, e ->
-            if (e != null) {
-                Log.d(ContentValues.TAG, "Error: $e")
-                return@EventListener
-            }
-        val newData = HashMap<String, Any>()
-            val cek = documentSnapshot?.getString(meja)
-
-            if (cek == "Kosong"){
-                newData[meja] = "Di pesan"
+        val loading = LoadingDialog(this)
+        loading.startLoading()
+        val handler = Handler()
+        handler.postDelayed(object :Runnable{
+            override fun run(){
+                loading.isDismiss()
 
                 val documentReference: DocumentReference = store.collection("meja").document("reservasimeja")
-                documentReference.set(newData, SetOptions.merge())
-                    .addOnSuccessListener {
-                        showToast("Berhasil Mengakses Meja")
-                        val intent = Intent(this, CountDownTableActivity::class.java)
-                        intent.putExtra("Meja", meja)
-                        startActivity(intent)
+                documentReference.addSnapshotListener(this@TableActivity, EventListener<DocumentSnapshot> { documentSnapshot, e ->
+                    if (e != null) {
+                        Log.d(ContentValues.TAG, "Error: $e")
+                        return@EventListener
+                    }
+                    val newData = HashMap<String, Any>()
+                    val cek = documentSnapshot?.getString(meja)
 
+                    if (cek == "Kosong"){
+                        newData[meja] = "Di pesan"
+
+                        val documentReference: DocumentReference = store.collection("meja").document("reservasimeja")
+                        documentReference.set(newData, SetOptions.merge())
+                            .addOnSuccessListener {
+                                showToast("Berhasil Mengakses Meja")
+                                val intent = Intent(this@TableActivity, CountDownTableActivity::class.java)
+                                intent.putExtra("Meja", meja)
+                                startActivity(intent)
+
+                            }
+                            .addOnFailureListener { e ->
+                                showToast("Gagal Memesan Meja: ${e.message}")
+                            }
                     }
-                    .addOnFailureListener { e ->
-                        showToast("Gagal Memesan Meja: ${e.message}")
-                    }
+                })
+
             }
-        })
+        }, 3000)
+
     }
 
     private fun showToast(message: String) {
@@ -120,12 +133,16 @@ class TableActivity : AppCompatActivity() {
                         val button = buttonList[index - 1]
                         if (value == "Di pesan") {
                             button.isEnabled = false
-                            button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
+                            button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.grey)
                             button.setTextColor(ContextCompat.getColor(this, R.color.white))
-                        } else {
+                        } else if (value == "Kosong") {
                             button.isEnabled = true
                             button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
                             button.setTextColor(ContextCompat.getColor(this, R.color.black))
+                        } else if (value == "Di Pakai") {
+                            button.isEnabled = false
+                            button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
+                            button.setTextColor(ContextCompat.getColor(this, R.color.white))
                         }
                     }
                 }

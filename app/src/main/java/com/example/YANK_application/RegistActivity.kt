@@ -167,6 +167,8 @@ class RegistActivity : AppCompatActivity() {
                             user["Phone"] = phone
                             user["Waktu"] = "0"
                             user["Histori"] = ""
+                            user["Banned"] = 0
+                            user["Meja"] = ""
                             documentReference.set(user)
                             intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
@@ -239,7 +241,9 @@ class RegistActivity : AppCompatActivity() {
     }
     // menyembunyikan status bar
     private fun hideStatusBar() {
-        window.insetsController?.hide(WindowInsets.Type.statusBars())
+//        window.insetsController?.hide(WindowInsets.Type.statusBars())
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+
     }
 
     private fun showNameExistAlert(isNotValid: Boolean){

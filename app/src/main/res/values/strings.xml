@@ -10,4 +10,169 @@
 
     <string name="TitleStartForget">FORGET PASSWORD</string>
 
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--  Desk Package 1  -->
+    <string name="Normal_Delights_Package">
+Deskripsi : \n
+\t    Menawarkan berbagai hidangan khas kami yang lezat, cocok bagi mereka yang mencari
+makanan yang memuaskan dan penuh cita rasa dan cocok untuk individu atau kelompok kecil. \n\n
+Menu : \n
+\t- Dada Ayam Panggang Dengan Sayuran Panggang, \n
+\t- Risotto Jamur Creamy, \n
+\t- Salad Hijau Dengan Saus Balsamic Vinaigrette, \n
+\t- Ice Tea dan Pilihan Makanan Penutup.
+    </string>
+
+    <!-- Desk Package 2 -->
+    <string name="Deluxe_Experience_Package">
+        Deskripsi : \n
+        \t  Rasakan pengalaman makan yang lebih istimewa dengan paket ini. Nikmati pilihan yang \n
+        \t  lebih luas dari hidangan terbaik kami dan kreasi kuliner yang istimewa. Ideal untuk \n
+        \t  mereka yang mencari hidangan yang lebih beragam dan lengkap. \n
+        Menu : \n
+        \t    - Sushi Segar dan Sashimi \n
+        \t    - Udang Panggang Dengan Saus Lemon Butter \n
+        \t    - Sup Lobster Krim, Daging Sapi Panggang Dengan Saus Merah, \n
+        \t    - Lemon Tea dan variasi makanan penutup.
+    </string>
+
+    <!-- Desk Package 3 -->
+    <string name="Gourmet_Journey_Package">
+        Deskripsi : \n
+        \t    Mulailah petualangan gastronomi yang tak terlupakan dengan paket ini. Menikmati beragam \n
+        \t    hidangan premium dan cita rasa spesial. Cocok untuk lidah yang peka dan mereka yang \n
+        \t    mencari puncak cita rasa dan kehalusan. \n
+        Menu : \n
+        /t  - Foie Gras Panggang Dengan Saus Balsamic Reduction, \n
+        /t  - Kaviar Dengan Sour Cream dan Blini, Lumba-Lumba Bakar Dengan Saus Rempah-Rempah Eksotis, \n
+        /t  - Cranberry Soda dan Mousse Coklat Belgia Dengan Ceri.
+    </string>
+
+    <!-- Desk Package 4 -->
+    <string name="Premium_Indulgence_Package">
+        Deskripsi : \n
+        \t    Manjakan diri Anda dengan hidangan mewah yang melimpah. Nikmati beragam hidangan \n
+        \t    gurmeet dan makanan lezat. Didesain untuk para pecinta makanan yang menghargai hal-hal  \n
+        \t    terbaik dalam hidup. \n
+        Menu : \n
+        /t  - Lobster panggang dengan mentega lemon, \n
+        /t  - Steak wagyu dengan saus truffle, \n
+        /t  - Risotto keju parmigiano reggiano, \n
+        /t  - Strawberry yogurt \n
+    </string>
+
+    <!-- Desk Package 5 -->
+    <string name="Ultimate_Extravaganza_Package">
+        Deskripsi : \n
+        \t    Siapkan diri Anda untuk ekstravaganza luar biasa dengan hidangan kami yang mewah  \n
+        \t    dalam paket ekstravaganza maksimal ini. Rasakan sensasi tak terlupakan dengan   \n
+        \t    bahan-bahan terbaik dan keahlian kuliner yang mahir. Didesain untuk mereka yang \n
+        \t    menginginkan pengalaman makan yang tak terlupakan, sekali seumur hidup. \n
+        Menu : \n
+        /t  - Foie gras panggang dengan saus truffle, \n
+        /t  - Lobster panggang dengan mentega dan saus lemon, \n
+        /t  - Wagyu beef dengan saus jus merah, \n
+        /t  - Hidangan ikan laut segar dengan saus rempah eksotis, \n
+        /t  - Hidangan sampingan yang mewah, \n
+        /t  - Lemon tea, Blueberry Yogurt, Espresso, Cappuccino, Latte, Macchiato. \n
+    </string>
+
+    <!-- Desk Minum 1 -->
+    <string name="Mojito">
+        Nikmati segarnya kesegaran Mojito minuman khas yang terbuat dari campuran rum putih, \n
+        soda, gula, air jeruk nipis, dan daun mint yang segar. Dalam menu ini, Anda dapat \n
+        menikmati Mojito dalam berbagai varian rasa yang menggugah selera menambahkan \n
+        buah-buahan segar seperti stroberi, ceri, atau mangga untuk memberikan sentuhan manis \n
+        dan rasa buah yang menyegarkan.
+    </string>
+
+    <!-- Desk Minum 2 -->
+    <string name="Margarita">
+        Nikmati kelezatan Margarita kami yang terbuat dari perpaduan sempurna antara tequila \n
+        berkualitas tinggi, likuer jeruk yang manis, dan air jeruk nipis segar. Rasanya yang seimbang \n
+        antara manis, asam, dan hangatnya tequila akan memanjakan indera Anda. Kami \n
+        menyajikan Margarita dalam berbagai varian yang menarik, mulai dari Margarita klasik yang \n
+        menggugah selera hingga Margarita stroberi dengan sentuhan manis buah stroberi segar. \n
+        Pilihlah varian yang sesuai dengan selera Anda.
+    </string>
+
+    <!-- Desk Minum 3 -->
+    <string name="Whiskey_Sout">
+        Nikmati kelezatan Whiskey Sour kami yang terbuat dari campuran whiskey berkualitas \n
+        tinggi, perasan lemon yang segar, sirup gula yang manis, dan taburan anggur merah yang \n
+        mewah. Rasanya yang seimbang antara manis, asam, dan kekarakteran whiskey akan \n
+        memberikan pengalaman yang memukau bagi selera Anda. Kami menyajikan Whiskey \n
+        Sour dalam variasi yang menarik, mulai dari Whiskey Sour klasik yang memukau hingga Whiskey \n
+        Sour dengan sentuhan buah seperti blueberry atau blackberry. Pilihlah varian yang sesuai \n
+        dengan preferensi Anda
+    </string>
+
+    <!-- Desk Minum 4 -->
+    <string name="Piña_Colada">
+        Nikmati kelezatan Piña Colada kami yang terdiri dari campuran jus nanas segar, cream of \n
+        coconut yang lembut, dan sedikit sentuhan rum putih yang memberikan rasa yang \n
+        menyenangkan. Setiap tegukan akan memanjakan lidah Anda dengan keharuman dan \n
+        kelezatan buah nanas yang khas. Tersedia dalam variasi yang menggoda, seperti Piña \n
+        Colada klasik yang autentik, atau varian dengan tambahan buah seperti stroberi, mangga,  \n
+        atau blueberry. Pilihlah varian favorit Anda.
+    </string>
+
+    <!-- Desk Minum 5 -->
+    <string name="Heineken">
+        Nikmati sensasi menyegarkan Heineken menghadirkan aroma yang menyegarkan dan khas. \n
+        Setiap tegukan membawa kelezatan rasa malt yang halus, dengan kesan ringan yang \n
+        memberikan sentuhan khas Heineken. Rasakan kenikmatan rasa yang seimbang, dengan \n
+        keasaman yang tepat dan rasa yang tahan lama menjadi pasangan sempurna untuk  \n
+        hidangan dalam menu atau hidangan lain yang ada di meja Anda. Rasakan kombinasi yang \n
+        sempurna antara kelezatan makanan.
+    </string>
+
+    <!-- Desk Minum 5 -->
+    <string name="Soju">
+        Nikmati kelezatan Soju yang memiliki kekhasan dengan rasa yang lembut dan halus, \n
+        membuatnya menjadi pilihan yang tepat untuk melengkapi hidangan Anda. Nikmati aroma \n
+        yang menyegarkan dan kenikmatan rasa yang unik dari setiap tegukan Soju. Rasa manis \n
+        dan sedikit asamnya menciptakan keharmonisan yang sempurna di lidah Anda. Kami  \n
+        menyediakan Soju dalam berbagai varian, mulai dari varian original hingga varian \n
+        buah-buahan yang segar. Anda dapat memilih sesuai dengan selera dan preferensi Anda.
+    </string>
+
+    <!-- Desk Desert 1 -->
+    <string name="Ice_Cream">
+Nikmati kelezatan dan keharuman dari berbagai varian rasa es krim kami. Dari rasa klasik
+seperti vanilla, coklat, dan strawberry, hingga varian eksotis seperti pistachio, mint chocolate
+chip, dan salted caramel, kami memiliki segala sesuatu yang Anda butuhkan untuk
+memanjakan lidah Anda. Dessert Ice Cream kami disajikan dengan berbagai topping yang
+menggoda, seperti saus coklat, saus karamel, kacang-kacangan panggang, ceri manis, dan
+taburan rainbow sprinkles. Anda dapat menciptakan kombinasi yang sempurna sesuai
+dengan selera dan keinginan Anda.
+    </string>
+
+    <!-- Desk Desert 2 -->
+    <string name="Fruit_Salad">
+        Nikmati kelezatan dan menyegarkan fruit salad menggabungkan berbagai macam \n
+        buah-buahan segar yang dipotong-potong dengan indah, seperti potongan melon manis, \n
+        irisan segar anggur, potongan segar jeruk, potongan kiwi yang lezat, serta berbagai jenis \n
+        buah-buahan musiman lainnya. Setiap gigitan dalam Dessert Fruit Salad akan \n
+        memperkenalkan Anda pada kombinasi rasa yang beragam dan memanjakan lidah Anda \n
+        dengan kelezatan buah-buahan segar yang alami. Nikmati kesegaran dan kelezatan dari \n
+        Dessert Fruit Salad kami, yang akan menyegarkan selera Anda dan memberikan kepuasan \n
+        setelah makan.
+    </string>
+
+    <!-- Desk Desert 3 -->
+    <string name="Brownies_Fudgy">
+        Nikmati Desert Brownies Fudgy brownies yang lembut, kaya rasa dengan tekstur yang \n
+        lembut dan kenikmatan cokelat yang melimpah. Brownies kami dibuat dengan resep klasik \n
+        yang menghasilkan hasil akhir yang sempurna, dengan lapisan luar yang renyah dan bagian \n
+        dalam yang lembab. Selain itu, Dessert Brownies Fudgy kami diisi dengan remah coklat \n
+        lezat yang memberikan sentuhan ekstra kelezatan. Hidangan ini dapat dinikmati dengan \n
+        cara yang berbeda dengan kelezatan coklat yang memikat.
+    </string>
+
+
 </resources>

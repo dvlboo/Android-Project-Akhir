@@ -129,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
                     if (verification == true){
                         val user = auth.currentUser
                         // Lanjutkan ke halaman berikutnya
-                        Intent(this, HomeActivity::class.java).also{
+                        Intent(this, NewHomeActivity::class.java).also{
                             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(it)
                             showToast("Login Berhasil")
@@ -163,6 +163,8 @@ class LoginActivity : AppCompatActivity() {
     }
     // menyembunyikan status bar
     private fun hideStatusBar() {
+//        window.insetsController?.hide(WindowInsets.Type.statusBars())
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         }

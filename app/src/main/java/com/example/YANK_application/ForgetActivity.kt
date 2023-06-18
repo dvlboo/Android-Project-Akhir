@@ -56,7 +56,7 @@ class ForgetActivity : AppCompatActivity() {
                         Intent(this, LoginActivity::class.java).also {
                             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(it)
-                            showToast("Periksa Email Anda untuk mengatur ulang kata sandi!")
+                            showToast("Check Your Email To Reset Password!")
                         }
                     }else{
                         showToast(reset.exception?.message.toString())
@@ -69,7 +69,7 @@ class ForgetActivity : AppCompatActivity() {
 
     private fun showEmailValidAlert(isNotValid: Boolean){
         if(isNotValid){
-            binding.ETEmail.error = "Email tidak valid!"
+            binding.ETEmail.error = "Invalid E-mail!"
             binding.BChange.isEnabled = false
             binding.BChange.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
         }else{
@@ -87,12 +87,12 @@ class ForgetActivity : AppCompatActivity() {
     }
     // menyembunyikan status bar
     private fun hideStatusBar() {
-        window.insetsController?.hide(WindowInsets.Type.statusBars())
+//        window.insetsController?.hide(WindowInsets.Type.statusBars())
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 
 }

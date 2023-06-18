@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".activity.LoginActivity"
     android:background="@drawable/bg_login">
 
     <ImageView
@@ -49,30 +49,34 @@
         android:id="@+id/til_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/radius_email"
-        android:hint="Email"
-        app:hintTextColor="@color/black"
-        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_keterangan"
-        app:startIconDrawable="@drawable/ic_email">
+        app:startIconDrawable="@drawable/ic_email"
+        android:layout_marginHorizontal="10dp"
+        app:boxCornerRadiusBottomEnd="7dp"
+        app:boxCornerRadiusBottomStart="7dp"
+        app:hintTextColor="@color/black"
+        android:textColorHint="@color/black"
+        app:boxStrokeColor="#878787"
+        >
 
         <EditText
             android:id="@+id/ETEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="10dp"
             android:backgroundTint="@color/white"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginHorizontal="10dp"
+            android:hint="Email"
+            android:textColorHighlight="#68000000"
+            android:layout_marginTop="10dp"
             android:inputType="textEmailAddress"
-            android:textColor="@color/black"
-            android:textColorHighlight="@color/black"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +93,9 @@
         app:boxCornerRadiusBottomEnd="7dp"
         app:boxCornerRadiusBottomStart="7dp"
         app:hintTextColor="@color/black"
-        android:background="@drawable/radius_password">
+        android:background="@drawable/radius_password"
+        android:textColorHint="@color/black"
+        app:boxStrokeColor="#878787">
 
         <EditText
             android:id="@+id/ETPassword"
@@ -100,11 +106,12 @@
             android:focusable="true"
             android:layout_marginHorizontal="10dp"
             android:hint="Sandi"
-            android:textColorHighlight="@color/black"
+            android:textColorHighlight="#68000000"
             android:layout_marginBottom="18dp"
             android:inputType="textPassword"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:paddingEnd="50dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -127,10 +134,11 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="15dp"
-        android:backgroundTint="#FE0E3B"
+        android:backgroundTint="@color/grey"
         android:foreground="?attr/selectableItemBackground"
         android:outlineSpotShadowColor="@color/white"
         android:text="LOGIN"
+        android:enabled="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
